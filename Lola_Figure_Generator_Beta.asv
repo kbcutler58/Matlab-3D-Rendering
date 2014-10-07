@@ -241,7 +241,6 @@ imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
 title(imagelabel)
 saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 % saveas(gcf, imagelabel2, 'fig')
-close all
 end
 % close all
 

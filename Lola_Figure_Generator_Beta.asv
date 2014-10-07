@@ -24,6 +24,8 @@
         * Coming Soon
             Save File
             Multiple Figure Inputs
+
+    Working on creating function / test scr
 %}
 
 clear
@@ -238,9 +240,12 @@ view(2)
 cd(folder3)
 imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
 % imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
+
 title(imagelabel)
 saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 % saveas(gcf, imagelabel2, 'fig')
+
+close all
 end
 % close all
 

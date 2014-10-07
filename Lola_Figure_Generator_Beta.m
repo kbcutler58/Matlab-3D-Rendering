@@ -24,6 +24,10 @@
         * Coming Soon
             Save File
             Multiple Figure Inputs
+
+    Working on creating function / test script
+    Does UV/Scaling need to be adjusted based on input ranges   
+    Does Lola need to be rescanned
 %}
 
 clear
@@ -236,11 +240,15 @@ view(2)
 
 
 cd(folder3)
-imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
-% imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
+
+% imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
+% title(imagelabel)
+% saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
+
+imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
 title(imagelabel)
-saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
-% saveas(gcf, imagelabel2, 'fig')
+saveas(gcf, imagelabel2, 'fig')
+
 close all
 end
 % close all

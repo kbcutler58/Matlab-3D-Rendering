@@ -38,9 +38,9 @@ clc
 % U = -60; % Left and Right translation
 % V = -5;  % Up and Down translation
 
-ScaleFactor = 2; %Size scaling
+ScaleFactor = 5; %Size scaling
 U = 0; % Left and Right translation
-V = 10;  % Up and Down translation
+V = 0;  % Up and Down translation
 
 % folder for data figure
 % folder1 = 'C:\Users\Kyle\Downloads\Day _1 DOSI Images\Day _1 DOSI Images\figure files';
@@ -54,25 +54,27 @@ stl_file = 'stl_test_file';
 folder3 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\Output';
 %% Load in STL file
 
-[faces,vert] = loadSTL( folder2, stl_file);
+% [faces,vert] = loadSTL( folder2, stl_file);
 
 
 % trimesh(faces,vert(:,1),vert(:,2),vert(:,3))
 % view(2)
 
 % Older Code 10/8/14
-%{
-% cd(folder2)
-% 
-% [faces,vert,normals]=stlread(stl_file);
-% x = 100*vert(:,1);
-% y = 100*-vert(:,2);
-% z = 100*-vert(:,3);
-% vert = [x,y,z];
+
+cd(folder2)
+stl_file = 'stl_test_file.stl';
+[faces,vert,normals]=stlread(stl_file);
+x = 100*vert(:,1);
+y = 100*-vert(:,2);
+z = 100*-vert(:,3);
+vert = [x,y,z];
 
 % trimesh(faces,x,y,z);
 % view(2)
-%}
+
+
+
 %% Load in data figure
 
 cd(folder1);
@@ -91,7 +93,7 @@ close all
 %% Create/Load correspondence
 cd(folder2);
 
-datatip = load('cursor_info_oct8_2.mat');
+datatip = load('cursor_info_oct8_3.mat');
 cursor_info = datatip.cursor_info;
 clear datatip
 
@@ -109,9 +111,11 @@ transform1(4,:) = 1;
 
 % 2xM matrix [ x1 x2 x3...xn,y1 y2 y3...yn]
 % Original 2D Points (0,0) (0,10) (10,10) (10,0)
-% transform2=[0 0 10 10; 0 10 10 0];
+%  transform2=[0 0 10 10; 0 10 10 0];
 
-transform2=[0 0 0 10 20 20 20 10; 0 10 20 20 20 10 0 0];
+% transform2=[0 0 0 10 20 20 20 10; 0 10 20 20 20 10 0 0];
+
+transform2 = [0 -10 10 0;0 0 0 10];
 
 % Generate Transformation Matrix
 
@@ -119,7 +123,7 @@ transform2=[0 0 0 10 20 20 20 10; 0 10 20 20 20 10 0 0];
 
 % Subselect area of mesh to map data (R or L)
 
-zrange = -64;
+zrange = -67;
 vertselect=find(vert(:,3)>zrange);
 % vertselect2 = find(vert(:,2)>
 vertcopy=zeros(length(vert),3);

@@ -34,34 +34,46 @@ clear
 clc
 
 % Visualization Options
-ScaleFactor = 4.5; %Size scaling
-U = -60; % Left and Right translation
-V = -5;  % Up and Down translation
+% ScaleFactor = 4.5; %Size scaling
+% U = -60; % Left and Right translation
+% V = -5;  % Up and Down translation
+
+ScaleFactor = 2; %Size scaling
+U = 0; % Left and Right translation
+V = 10;  % Up and Down translation
 
 % folder for data figure
+% folder1 = 'C:\Users\Kyle\Downloads\Day _1 DOSI Images\Day _1 DOSI Images\figure files';
 folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files';
-
-% main folder
+% main/stl folder
 folder2 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering';
+% stl file
+stl_file = 'stl_test_file';
 
 % output folder
 folder3 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\Output';
 %% Load in STL file
 
-cd(folder2)
+[faces,vert] = loadSTL( folder2, stl_file);
 
-stl_file = 'stl_test_file.stl';
-[faces,vert,normals]=stlread(stl_file);
-x = 100*vert(:,1);
-y = 100*-vert(:,2);
-z = 100-vert(:,3);
-vert = [x,y,z];
+
+% trimesh(faces,vert(:,1),vert(:,2),vert(:,3))
+% view(2)
+
+% Older Code 10/8/14
+%{
+% cd(folder2)
+% 
+% [faces,vert,normals]=stlread(stl_file);
+% x = 100*vert(:,1);
+% y = 100*-vert(:,2);
+% z = 100*-vert(:,3);
+% vert = [x,y,z];
 
 % trimesh(faces,x,y,z);
 % view(2)
-
+%}
 %% Load in data figure
-
 
 cd(folder1);
 folderlabel = dir('*.fig');
@@ -79,7 +91,7 @@ close all
 %% Create/Load correspondence
 cd(folder2);
 
-datatip = load('cursor_info_oct6.mat');
+datatip = load('cursor_info_oct8_2.mat');
 cursor_info = datatip.cursor_info;
 clear datatip
 
@@ -97,7 +109,9 @@ transform1(4,:) = 1;
 
 % 2xM matrix [ x1 x2 x3...xn,y1 y2 y3...yn]
 % Original 2D Points (0,0) (0,10) (10,10) (10,0)
-transform2=[0 0 10 10; 0 10 10 0];
+% transform2=[0 0 10 10; 0 10 10 0];
+
+transform2=[0 0 0 10 20 20 20 10; 0 10 20 20 20 10 0 0];
 
 % Generate Transformation Matrix
 
@@ -105,11 +119,12 @@ transform2=[0 0 10 10; 0 10 10 0];
 
 % Subselect area of mesh to map data (R or L)
 
-zrange = 99.32;
+zrange = -64;
 vertselect=find(vert(:,3)>zrange);
+% vertselect2 = find(vert(:,2)>
 vertcopy=zeros(length(vert),3);
-vertcopy = vertcopy + 1000;
-vertcopy(:,3)=1;
+% vertcopy = vertcopy + 100000;
+% vertcopy(:,3)=1;
 vertcopy(vertselect,:)= vert(vertselect,:);
 vertcopy=vertcopy';
 vertcopy(4,vertselect)=1;
@@ -122,6 +137,7 @@ vert(4,:)=1;
 % new_correspondence = correspondence_matrix*vert;
 
 new_correspondence = correspondence_matrix*vertcopy;
+
 vertex_correspondence = zeros(3,length(new_correspondence));
 
 for i = 1:length(new_correspondence);
@@ -156,11 +172,13 @@ lowerVCx = (VC2(1,:)<lowVC_xlimit);
 upperVCx = (VC2(1,:)>highVC_xlimit);
 lowerVCy = (VC2(2,:)<lowVC_ylimit);
 upperVCy = (VC2(2,:)>highVC_ylimit);
+zeroZC = (VC2(1,:)==0);
 
 VC_final = zeros(2,length(VC2));
 VC_mask1 = ((lowerVCx | upperVCx));
 VC_mask2 = ((lowerVCy | upperVCy));
-VC_mask = ((~VC_mask1) & (~VC_mask2));
+VC_mask3 = zeroZC;
+VC_mask = ((~VC_mask1) & (~VC_mask2) &(~VC_mask3));
 VC_final(:,VC_mask) = VC2(1:2,VC_mask);
 VC_final(3,:) = 1:length(VC_final);
 
@@ -172,7 +190,7 @@ VC_final_y = VC_final(2,VC_mask);
 [VC_sorted_x,index_x] = sort(VC_final_x,2);
 [VC_sorted_y,index_y] = sort(VC_final_y,2);
 
-
+scatter(VC_final_x,VC_final_y);
 
 %% Tag sorted VC with 2D locations
 y_range3 = fliplr(y_range);
@@ -208,49 +226,58 @@ for j=1:length(y_range2)-1
 end
 
 
-for iteration=1:length(folderlabel)
-cd(folder1)   
-[pathstr,name,ext]=fileparts(folderlabel(iteration).name);
-imagelabel = name;
-pathtoimage = strcat(imagelabel, ext);
-open(pathtoimage);
-h = gcf;
-[x_range,y_range,colorData]=getimage(h);
-colorbaroriginal=get(gca,'clim');
-close all
+% for iteration=1:length(folderlabel)
+iteration = 1;
 
+if (iteration ~= 1)    
+    cd(folder1)   
+    [pathstr,name,ext]=fileparts(folderlabel(iteration).name);
+    imagelabel = name;
+    pathtoimage = strcat(imagelabel, ext);
+    open(pathtoimage);
+    h = gcf;
+    [x_range,y_range,colorData]=getimage(h);
+    colorbaroriginal=get(gca,'clim');
+    close all
+end 
 %% Color vertices according to Tag
 colorData2 = zeros(length(vert),1);
+[n,m] = size(colorData);
 for i=1:length(x_range2)-1
     for j=1:length(y_range2)-1
         xset = index_x(1,x_index(i):x_index(i+1));
         yset = index_y(1,y_index(j):y_index(j+1));
         combinationSet = intersect(xset,yset);
         combocombo = VC_final_only(3,combinationSet);
-        colorData2(combocombo) = colorData(241-j,289-i);
+        colorData2(combocombo) = colorData(n-j,m-i);
     end
 end
 
 %% Display Figure
 figure('units','normalized','outerposition',[0 0 1 1])
 trimesh(faces,vert(1,:),vert(2,:),vert(3,:),colorData2);
+% trisurf(faces,vert(1,:),vert(2,:),vert(3,:),colorData2);
 set(gca,'clim',colorbaroriginal)
 colorbar
 view(2)
+shading interp
 
 
 cd(folder3)
 
-% imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
-% title(imagelabel)
-% saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
-
-imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
+imagelabel2 = strcat(imagelabel,'-MRI-Render','.jpg'); %Change to jpg if desired
 title(imagelabel)
-saveas(gcf, imagelabel2, 'fig')
+h = gcf;
+set(h,'PaperPositionMode','auto')
+saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 
-close all
-end
+% imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
+% title(imagelabel)
+% saveas(gcf, imagelabel2, 'fig')
+
+% close all
+% end
+
 % close all
 
 % Previous Method

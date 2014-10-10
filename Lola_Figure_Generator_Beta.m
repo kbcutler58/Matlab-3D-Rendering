@@ -28,6 +28,11 @@
     Working on creating function / test script
     Does UV/Scaling need to be adjusted based on input ranges   
     Does Lola need to be rescanned
+
+    Need R-L distinction
+    Need view correction for R-L and ranges
+    Depth sensitivity lacking in Z direction
+    Incorporate Tom Animation Code / visual
 %}
 
 clear
@@ -44,7 +49,7 @@ V = -5;  % Up and Down translation
 
 % folder for data figure
 % folder1 = 'C:\Users\Kyle\Downloads\Day _1 DOSI Images\Day _1 DOSI Images\figure files';
-folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files';
+folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files7789';
 % main/stl folder
 folder2 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering';
 % stl file

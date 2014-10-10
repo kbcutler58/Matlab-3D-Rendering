@@ -185,7 +185,7 @@ VC_mask1 = ((lowerVCx | upperVCx));
 VC_mask2 = ((lowerVCy | upperVCy));
 VC_mask = ((~VC_mask1) & (~VC_mask2));
 VC_final(1:2,VC_mask) = VC2(1:2,VC_mask);
-VC_final(3,:) = 1:length(VC_final);
+% VC_final(3,:) = 1:length(VC_final);
 
 % Sort and index VC
 VC_final_only = VC_final(:,VC_mask);
@@ -231,8 +231,8 @@ for j=1:length(y_range2)-1
 end
 
 
-% for iteration=1:length(folderlabel)
-iteration = 1;
+for iteration=1:length(folderlabel)
+% iteration = 1;
 
 if (iteration ~= 1)    
     cd(folder1)   
@@ -276,12 +276,12 @@ h = gcf;
 set(h,'PaperPositionMode','auto')
 saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 
-% imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
-% title(imagelabel)
-% saveas(gcf, imagelabel2, 'fig')
+ imagelabel2 = strcat(imagelabel,'-MRI-Render','.fig');
+ title(imagelabel)
+ saveas(gcf, imagelabel2, 'fig')
 
-% close all
-% end
+ close all
+end
 
 % close all
 

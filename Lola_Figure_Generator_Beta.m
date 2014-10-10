@@ -49,7 +49,7 @@ V = -5;  % Up and Down translation
 
 % folder for data figure
 % folder1 = 'C:\Users\Kyle\Downloads\Day _1 DOSI Images\Day _1 DOSI Images\figure files';
-folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files';
+folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files8714';
 % main/stl folder
 folder2 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering';
 % stl file
@@ -236,8 +236,8 @@ for j=1:length(y_range2)-1
 end
 
 
-% for iteration=1:length(folderlabel)
-iteration = 1;
+for iteration=1:length(folderlabel)
+% iteration = 1;
 
 if (iteration ~= 1)    
     cd(folder1)   
@@ -285,8 +285,10 @@ saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
  title(imagelabel)
  saveas(gcf, imagelabel2, 'fig')
 
-%  close all
-% end
+close all
+cd(folder2)
+Animator3000
+end
 
 % close all
 
@@ -350,7 +352,4 @@ saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 
 %}
 
-cd(folder2);
-close all
 
-Animator3000

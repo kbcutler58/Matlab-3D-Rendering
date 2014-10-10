@@ -39,8 +39,8 @@ clc
 % V = -5;  % Up and Down translation
 
 ScaleFactor = 5; %Size scaling
-U = 0; % Left and Right translation
-V = 0;  % Up and Down translation
+U = -60; % Left and Right translation
+V = -5;  % Up and Down translation
 
 % folder for data figure
 % folder1 = 'C:\Users\Kyle\Downloads\Day _1 DOSI Images\Day _1 DOSI Images\figure files';
@@ -67,11 +67,11 @@ stl_file = 'stl_test_file.stl';
 [faces,vert,normals]=stlread(stl_file);
 x = 100*vert(:,1);
 y = 100*-vert(:,2);
-z = 100*-vert(:,3);
+z = 100-vert(:,3);
 vert = [x,y,z];
 
-% trimesh(faces,x,y,z);
-% view(2)
+%  trimesh(faces,x,y,z);
+%  view(2)
 
 
 
@@ -93,7 +93,7 @@ close all
 %% Create/Load correspondence
 cd(folder2);
 
-datatip = load('cursor_info_oct8_3.mat');
+datatip = load('cursor_info_oct6.mat');
 cursor_info = datatip.cursor_info;
 clear datatip
 
@@ -111,19 +111,18 @@ transform1(4,:) = 1;
 
 % 2xM matrix [ x1 x2 x3...xn,y1 y2 y3...yn]
 % Original 2D Points (0,0) (0,10) (10,10) (10,0)
-%  transform2=[0 0 10 10; 0 10 10 0];
+ transform2=[0 0 10 10; 0 10 10 0];
 
 % transform2=[0 0 0 10 20 20 20 10; 0 10 20 20 20 10 0 0];
-
-transform2 = [0 -10 10 0;0 0 0 10];
-
+% transform2 = [0 -10 10 0;0 0 0 10];
+% transform2 = [0 0 50; 0 50 0];
 % Generate Transformation Matrix
 
 [correspondence_matrix] = cameraMatrix(transform1,transform2);
 
 % Subselect area of mesh to map data (R or L)
 
-zrange = -67;
+zrange = 99.35;
 vertselect=find(vert(:,3)>zrange);
 % vertselect2 = find(vert(:,2)>
 vertcopy=zeros(length(vert),3);
@@ -157,33 +156,35 @@ end
 
 %% Subselecting VC
 
-% Only use z range VC
-% VC1 = vertex_correspondence(:,vertselect);
-VC1 = vertex_correspondence;
-
-% Scale VC in x and y
-VC2 = VC1 * ScaleFactor;
-VC2(1,:) = VC2(1,:) + U;
-VC2(2,:) = VC2(2,:) + V;
-
 % Select vertex correspondence that fits image
 lowVC_xlimit = min(x_range);
 highVC_xlimit = max(x_range);
 lowVC_ylimit = min(y_range);
 highVC_ylimit = max(y_range);
 
+% Only use z range VC
+% VC1 = vertex_correspondence(:,vertselect);
+VC1 = vertex_correspondence;
+VC1(3,:) = 1:length(VC1);
+zeroVC = VC1(1,:)==0;
+VC2 = VC1(:,~zeroVC);
+
+% Scale VC in x and y
+VC2(1:2,:) = VC2(1:2,:) * ScaleFactor;
+VC2(1,:) = VC2(1,:) + U;
+VC2(2,:) = VC2(2,:) + V;
+
 lowerVCx = (VC2(1,:)<lowVC_xlimit);
 upperVCx = (VC2(1,:)>highVC_xlimit);
 lowerVCy = (VC2(2,:)<lowVC_ylimit);
 upperVCy = (VC2(2,:)>highVC_ylimit);
-zeroZC = (VC2(1,:)==0);
 
 VC_final = zeros(2,length(VC2));
+VC_final(3,:) = VC2(3,:);
 VC_mask1 = ((lowerVCx | upperVCx));
 VC_mask2 = ((lowerVCy | upperVCy));
-VC_mask3 = zeroZC;
-VC_mask = ((~VC_mask1) & (~VC_mask2) &(~VC_mask3));
-VC_final(:,VC_mask) = VC2(1:2,VC_mask);
+VC_mask = ((~VC_mask1) & (~VC_mask2));
+VC_final(1:2,VC_mask) = VC2(1:2,VC_mask);
 VC_final(3,:) = 1:length(VC_final);
 
 % Sort and index VC
@@ -194,7 +195,7 @@ VC_final_y = VC_final(2,VC_mask);
 [VC_sorted_x,index_x] = sort(VC_final_x,2);
 [VC_sorted_y,index_y] = sort(VC_final_y,2);
 
-scatter(VC_final_x,VC_final_y);
+% scatter(VC_final_x,VC_final_y);
 
 %% Tag sorted VC with 2D locations
 y_range3 = fliplr(y_range);

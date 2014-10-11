@@ -24,7 +24,8 @@ axis vis3d
 
 lighting gouraud;
 set(gcf,'Renderer','zbuffer');
-daObj=VideoWriter('C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo\OutputVideo3','Motion JPEG AVI');
+videoname = strcat('C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo\',imagelabel);
+daObj=VideoWriter(videoname,'Motion JPEG AVI');
 
 open(daObj);
 for i = 1:length(dx);
@@ -36,7 +37,7 @@ for i = 1:length(dx);
 end
 
 close(daObj);
-
+cd(folder2)
 %%
 %     axis vis3d
 %     camdolly(5*dx(i),0,0,'fixtarget')

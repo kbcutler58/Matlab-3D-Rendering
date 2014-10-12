@@ -68,7 +68,7 @@ folder3 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\Output';
 % Older Code 10/8/14
 
 cd(folder2)
-stl_file = 'stl_test_file.stl';
+stl_file = 'stl_test_file2.stl';
 [faces,vert,normals]=stlread(stl_file);
 x = 100*vert(:,1);
 y = 100*-vert(:,2);

@@ -24,7 +24,7 @@ axis vis3d
 
 lighting gouraud;
 set(gcf,'Renderer','zbuffer');
-videoname = strcat('C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo\',imagelabel);
+videoname = strcat('C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo\',imagelabel,'torso');
 daObj=VideoWriter(videoname,'Motion JPEG AVI');
 
 open(daObj);

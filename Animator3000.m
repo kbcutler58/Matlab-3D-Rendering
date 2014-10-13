@@ -7,7 +7,7 @@ videofolder = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo';
 cd(videofolder);
 
 figure('units','normalized','outerposition',[0 0 1 1])
-h1=trisurf(faces,vert(1,:),vert(2,:),vert(3,:),colorData2,'EdgeColor','none','LineStyle','none');
+h1=trisurf(faces,vert(1,:),vert(2,:),100*vert(3,:),colorData2,'EdgeColor','none','LineStyle','none');
 title(imagelabel),xlabel('X axis'), ylabel('Y axis'), view(2)
 set(gca,'clim',colorbaroriginal)
 colorbar
@@ -23,6 +23,7 @@ axis vis3d
 % title('8714-T01 Baseline');
 
 lighting gouraud;
+%%
 set(gcf,'Renderer','zbuffer');
 videoname = strcat('C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\OutputVideo\',imagelabel,'torso');
 daObj=VideoWriter(videoname,'Motion JPEG AVI');

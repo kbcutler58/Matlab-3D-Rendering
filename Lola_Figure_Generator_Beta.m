@@ -53,7 +53,7 @@ folder1 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\figure files8714';
 % main/stl folder
 folder2 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering';
 % stl file
-stl_file = 'stl_test_file';
+% stl_file = 'stl_test_file';
 
 % output folder
 folder3 = 'C:\Users\Kyle\Documents\GitHub\Matlab-3D-Rendering\Output';

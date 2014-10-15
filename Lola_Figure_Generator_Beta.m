@@ -21,9 +21,8 @@
         Tag sorted vertex map with 2D locations
         Color vertices according to tag
         Display 3D Figure
-        * Coming Soon
-            Save File
-            Multiple Figure Inputs
+        Save File
+        Multiple Figure Inputs
 
     Working on creating function / test script
     Does UV/Scaling need to be adjusted based on input ranges   

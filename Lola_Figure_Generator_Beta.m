@@ -23,15 +23,14 @@
         Display 3D Figure
         Save File
         Multiple Figure Inputs
+        Animator3000., for animations
 
-    Working on creating function / test script
     Does UV/Scaling need to be adjusted based on input ranges   
-    Does Lola need to be rescanned
+    Does Lola need to be rescanned to make more accurate cursor points
 
     Need R-L distinction
     Need view correction for R-L and ranges
     Depth sensitivity lacking in Z direction
-    Incorporate Tom Animation Code / visual
 %}
 
 clear
@@ -286,7 +285,7 @@ saveas(gcf, imagelabel2, 'jpg') %Change to jpg if desired
 
 close all
 cd(folder2)
-Animator3000
+% Animator3000
 end
 
 % close all
